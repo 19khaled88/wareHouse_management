@@ -6,13 +6,14 @@ const ManageInventory = () => {
   const shortDescRef = useRef('')
   const priceRef = useRef('')
   const quantityRef = useRef('')
+  
   const addItemHandler = () => {
     setShowModal(false)
     const name = nameRef.current.value
     const shortDes = shortDescRef.current.value
     const price = priceRef.current.value
     const quantity = quantityRef.current.value
-    
+    console.log(name, shortDes, price, quantity)
   }
   return (
     <div className=" container mx-auto mt-10">
