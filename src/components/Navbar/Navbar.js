@@ -8,10 +8,10 @@ const Navbar = ({ fixed }) => {
         <div className="container px-4 mx-auto flex flex-wrap items-center justify-between">
           <div className="w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start">
             <a
-              className="text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase text-white"
+              className="text-lg font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase text-white"
               href="#pablo"
             >
-              pink Tailwind Starter Kit
+              BOOK-warehouse-control
             </a>
             <button
               className="text-white cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none"
@@ -44,7 +44,7 @@ const Navbar = ({ fixed }) => {
                   href="#pablo"
                 >
                   <i className="fab fa-twitter text-lg leading-lg text-white opacity-75"></i>
-                  <span className="ml-2">Tweet</span>
+                  <span className="ml-2">Inventory</span>
                 </a>
               </li>
               <li className="nav-item">
@@ -53,7 +53,7 @@ const Navbar = ({ fixed }) => {
                   href="#pablo"
                 >
                   <i className="fab fa-pinterest text-lg leading-lg text-white opacity-75"></i>
-                  <span className="ml-2">Pin</span>
+                  <span className="ml-2">Register</span>
                 </a>
               </li>
             </ul>
