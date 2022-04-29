@@ -5,13 +5,10 @@ import auth from '../components/firebase/firebase.init'
 import { onAuthStateChanged } from 'firebase/auth'
 const RequiredAuth = ({ children }) => {
   let [user] = useAuthState(auth)
-  const [changeState, setChangeState] = useState('')
   let location = useLocation()
 
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      // const uid = user.uid
-      // setChangeState(uid)
       return (
         <Navigate to="/register" state={{ from: location }} replace></Navigate>
       )

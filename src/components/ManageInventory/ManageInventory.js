@@ -1,7 +1,19 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 
 const ManageInventory = () => {
   const [showModal, setShowModal] = useState(false)
+  const nameRef = useRef('')
+  const shortDescRef = useRef('')
+  const priceRef = useRef('')
+  const quantityRef = useRef('')
+  const addItemHandler = () => {
+    setShowModal(false)
+    const name = nameRef.current.value
+    const shortDes = shortDescRef.current.value
+    const price = priceRef.current.value
+    const quantity = quantityRef.current.value
+    
+  }
   return (
     <div className=" container mx-auto mt-10">
       <div className="flex justify-end">
@@ -89,6 +101,8 @@ const ManageInventory = () => {
                   <div class="relative flex flex-row w-full flex-wrap items-stretch mb-3">
                     <label className="w-1/4 text-left">Name</label>
                     <input
+                      ref={nameRef}
+                      name="itemName"
                       type="text"
                       placeholder="Item name"
                       class="px-2 py-1 placeholder-slate-300 text-slate-600 relative bg-white bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-3/4 pr-10"
@@ -97,6 +111,8 @@ const ManageInventory = () => {
                   <div class="relative flex flex-row w-full flex-wrap items-stretch mb-3">
                     <label className="w-1/4 text-left">Short desc</label>
                     <textarea
+                      ref={shortDescRef}
+                      name="shortDesc"
                       type="text"
                       placeholder="Item short description"
                       class="px-2 py-1 placeholder-slate-300 text-slate-600 relative bg-white bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-3/4 pr-10"
@@ -105,6 +121,8 @@ const ManageInventory = () => {
                   <div class="relative flex flex-row w-full flex-wrap items-stretch mb-3">
                     <label className="w-1/4 text-left">Price</label>
                     <input
+                      ref={priceRef}
+                      name="price"
                       type="text"
                       placeholder="item price"
                       class="px-2 py-1 placeholder-slate-300 text-slate-600 relative bg-white bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-3/4 pr-10"
@@ -113,6 +131,8 @@ const ManageInventory = () => {
                   <div class="relative flex flex-row w-full flex-wrap items-stretch mb-3">
                     <label className="w-1/4 text-left">Quantity</label>
                     <input
+                      ref={quantityRef}
+                      name="quantity"
                       type="text"
                       placeholder="new quantity"
                       class="px-2 py-1 placeholder-slate-300 text-slate-600 relative bg-white bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-3/4 pr-10"
@@ -131,7 +151,7 @@ const ManageInventory = () => {
                   <button
                     className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                     type="button"
-                    onClick={() => setShowModal(false)}
+                    onClick={() => addItemHandler()}
                   >
                     Save Item
                   </button>
