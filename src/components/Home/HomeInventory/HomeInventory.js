@@ -13,7 +13,7 @@ const HomeInventory = () => {
       <div className="container text-2xl uppercase pt-10 mx-auto mb-10">
         <h4>Stock Sample</h4>
       </div>
-      <div className="container mx-auto grid grid-cols-3 gap-6 pb-10">
+      <div className="container mx-auto grid sm:grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-6 pb-10 gap-y-10">
         <CCard
           className=" mx-auto shadow-2xl shadow-cyan-400/50 rounded-md "
           style={{ width: '18rem' }}
