@@ -15,6 +15,7 @@ const Register = () => {
   const [errors, setErrors] = useState('')
   const navigate = useNavigate()
   const location = useLocation()
+
   const [
     signInWithEmailAndPassword,
     user,
@@ -30,6 +31,7 @@ const Register = () => {
   const emailRef = useRef('')
   const passRef = useRef('')
   const cPassRef = useRef('')
+  let from = location.state?.from?.pathname || '/'
   const registerHandler = () => {
     SetIsHaveAccount(!isHaveAccount)
   }
@@ -43,7 +45,9 @@ const Register = () => {
   if (loading || loading1) {
     return <p>Loading....</p>
   }
-
+  if (user || user1 || user3) {
+    navigate(from, { replace: true })
+  }
   const loginFormSubmitHandler = (e) => {
     e.preventDefault()
     const emailFound = emailRef.current.value
@@ -53,6 +57,7 @@ const Register = () => {
       const timer = setTimeout(() => {
         setErrors('')
       }, 3000)
+
       return timer
     }
     signInWithEmailAndPassword(emailFound, passFound)
@@ -81,13 +86,15 @@ const Register = () => {
   const signWithGoogle = () => {
     signInWithPopup(auth, provider)
       .then((result) => {
-        const currentUser = result.user
-        setUser(currentUser)
+        // const currentUser = result.user
+        // setUser(currentUser)
         navigate('/inventory')
+        toast('Successfully signned in')
       })
       .catch((error) => {
         const currentError = error.message
         setErrors(currentError)
+        toast('Sorry, sign in Unsuccessful')
         setTimeout(() => {
           setErrors('')
         }, 3000)

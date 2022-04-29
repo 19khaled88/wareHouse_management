@@ -1,13 +1,30 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+
+import { signOut } from 'firebase/auth'
+import { Link, useNavigate } from 'react-router-dom'
 import { FaBeer, FaRegUserCircle, FaUserCircle } from 'react-icons/fa'
 import { MdInventory } from 'react-icons/md'
-import { ToastContainer } from 'react-toastify'
-import { AiFillHome } from 'react-icons/ai'
-import { FiHome } from 'react-icons/fi'
+import { toast, ToastContainer } from 'react-toastify'
+import { AiFillHome, AiOutlineLogout } from 'react-icons/ai'
+import { FiHome, FiLogOut } from 'react-icons/fi'
+import { useAuthState } from 'react-firebase-hooks/auth'
+import auth from '../firebase/firebase.init'
 
 const Navbar = ({ fixed }) => {
+  const [user, loading, error] = useAuthState(auth)
   const [navbarOpen, setNavbarOpen] = useState(false)
+  const navigate = useNavigate()
+  const logoutHandler = () => {
+    signOut(auth)
+      .then(() => {
+        toast('Logout is successful')
+        navigate('/register')
+      })
+      .catch((error) => {
+        toast('You are still logged in')
+      })
+  }
+
   return (
     <>
       <nav className="relative flex flex-wrap items-center justify-between px-2 py-3 bg-cyan-500 ">
@@ -54,15 +71,27 @@ const Navbar = ({ fixed }) => {
                   <span className="ml-2 mt-1">Inventory</span>
                 </Link>
               </li>
-              <li className="nav-item">
-                <Link
-                  className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75"
-                  to="/register"
-                >
-                  <FaUserCircle className="text-lg opacity-75" />
-                  <span className="ml-2 mt-1">Register</span>
-                </Link>
-              </li>
+              {user !== null ? (
+                <li className="nav-item">
+                  <button
+                    onClick={logoutHandler}
+                    className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75"
+                  >
+                    <FiLogOut className="text-lg opacity-75" />
+                    <span className="ml-2 mt-1">Logout</span>
+                  </button>
+                </li>
+              ) : (
+                <li className="nav-item">
+                  <Link
+                    className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75"
+                    to="/register"
+                  >
+                    <FaUserCircle className="text-lg opacity-75" />
+                    <span className="ml-2 mt-1">Register</span>
+                  </Link>
+                </li>
+              )}
             </ul>
           </div>
         </div>

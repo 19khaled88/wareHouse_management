@@ -7,7 +7,12 @@ import {
   CCardText,
   CButton,
 } from '@coreui/react'
+import { Link } from 'react-router-dom'
 const HomeInventory = () => {
+  const inventoryUpdate = (id) => {
+    console.log(id)
+  }
+  
   return (
     <>
       <div className="container text-2xl uppercase pt-10 mx-auto mb-10">
@@ -37,7 +42,10 @@ const HomeInventory = () => {
               <CCardText>Supplier Name: All Kids Shop</CCardText>
             </div>
             <div className="grid justify-items-end">
-              <button className="bg-cyan-400 py-1 px-3 mr-2 rounded-md my-2">
+              <button
+                onClick={() => inventoryUpdate(5)}
+                className="bg-cyan-400 py-1 px-3 mr-2 rounded-md my-2"
+              >
                 Update Info
               </button>
             </div>
@@ -188,6 +196,14 @@ const HomeInventory = () => {
             </div>
           </CCardBody>
         </CCard>
+      </div>
+      <div className="my-5">
+        <Link
+          to="/manageInventory"
+          className="bg-pink-400 px-2 rounded-md py-1"
+        >
+          Manage Inventories
+        </Link>
       </div>
     </>
   )
