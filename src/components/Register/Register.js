@@ -1,5 +1,5 @@
-import { createUserWithEmailAndPassword } from 'firebase/auth'
 import React, { useState, useRef } from 'react'
+import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
 import {
   useCreateUserWithEmailAndPassword,
   useSignInWithEmailAndPassword,
@@ -7,39 +7,43 @@ import {
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import auth from '../firebase/firebase.init'
-
+import { useLocation, useNavigate } from 'react-router-dom'
+const provider = new GoogleAuthProvider()
 const Register = () => {
   const [isHaveAccount, SetIsHaveAccount] = useState(false)
+  const [user3, setUser] = useState('')
   const [errors, setErrors] = useState('')
+  const navigate = useNavigate()
+  const location = useLocation()
   const [
     signInWithEmailAndPassword,
     user,
     loading,
     error,
   ] = useSignInWithEmailAndPassword(auth)
+  const [
+    createUserWithEmailAndPassword,
+    user1,
+    loading1,
+    error1,
+  ] = useCreateUserWithEmailAndPassword(auth)
   const emailRef = useRef('')
   const passRef = useRef('')
   const cPassRef = useRef('')
   const registerHandler = () => {
     SetIsHaveAccount(!isHaveAccount)
   }
-  if (error) {
+  if (error || error1) {
     return (
       <div>
-        <p>Error. {error.message}</p>
+        <p>Error. {error?.message || error1?.message}</p>
       </div>
     )
   }
-  if (loading) {
+  if (loading || loading1) {
     return <p>Loading....</p>
   }
-  if (user) {
-    return (
-      <div>
-        <p>Registered User: {user.email}</p>
-      </div>
-    )
-  }
+
   const loginFormSubmitHandler = (e) => {
     e.preventDefault()
     const emailFound = emailRef.current.value
@@ -53,7 +57,7 @@ const Register = () => {
     }
     signInWithEmailAndPassword(emailFound, passFound)
   }
-  const signInFormSubmitHandler = (e) => {
+  const signUpFormSubmitHandler = (e) => {
     e.preventDefault()
     const emailFound = emailRef.current.value
     const passFound = passRef.current.value
@@ -72,6 +76,22 @@ const Register = () => {
       }, 3000)
     }
     createUserWithEmailAndPassword(emailFound, passFound)
+  }
+
+  const signWithGoogle = () => {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        const currentUser = result.user
+        setUser(currentUser)
+        navigate('/inventory')
+      })
+      .catch((error) => {
+        const currentError = error.message
+        setErrors(currentError)
+        setTimeout(() => {
+          setErrors('')
+        }, 3000)
+      })
   }
   return (
     <>
@@ -161,7 +181,7 @@ const Register = () => {
         ) : (
           <>
             <div className="text-2xl">Registration Form</div>
-            <form onSubmit={signInFormSubmitHandler}>
+            <form onSubmit={signUpFormSubmitHandler}>
               <div className="form-group mb-3">
                 <label
                   for="email"
@@ -270,37 +290,58 @@ const Register = () => {
             </form>
           </>
         )}
-        <div className="flex flex-row justify-between">
-          {isHaveAccount ? (
-            <p className="text-gray-800 text-sm mt-6 mb-2 text-center">
-              Don't have an account?{' '}
+        <p className="mt-2">or</p>
+        <div className="flex flex-col">
+          <div>
+            <p className="text-pink-800 text-sm my-3 mb-2 text-center">
               <button
-                onClick={registerHandler}
-                className="text-blue-600 hover:text-blue-700 focus:text-blue-700 transition duration-200 ease-in-out"
+                onClick={signWithGoogle}
+                className="w-full px-6 py-2 bg-gray-200 text-dark font-medium
+                text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg  focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150
+                ease-in-out flex justify-center items-center"
               >
-                Register
+                <img
+                  className="w-5 h-5 inline mr-4"
+                  src="/images/Google-icon.png"
+                />{' '}
+                Sign in with google
               </button>
             </p>
-          ) : (
-            <p className="text-gray-800 text-sm mt-6 mb-2 text-center">
-              Have Account?{' '}
-              <button
-                onClick={registerHandler}
-                className="text-blue-600 hover:text-blue-700 focus:text-blue-700 transition duration-200 ease-in-out"
-              >
-                Login
-              </button>
-            </p>
-          )}
+          </div>
+          <div className="flex flex-row justify-between">
+            {isHaveAccount ? (
+              <p className="text-gray-800 text-sm mt-2 mb-2 text-center">
+                Don't have an account?{' '}
+                <button
+                  onClick={registerHandler}
+                  className="text-blue-600 hover:text-blue-700 focus:text-blue-700 transition duration-200 ease-in-out"
+                >
+                  Register
+                </button>
+              </p>
+            ) : (
+              <p className="text-gray-800 text-sm mt-2 mb-2 text-center">
+                Have Account?{' '}
+                <button
+                  onClick={registerHandler}
+                  className="text-blue-600 hover:text-blue-700 focus:text-blue-700 transition duration-200 ease-in-out"
+                >
+                  Login
+                </button>
+              </p>
+            )}
 
-          <p className="text-sm mt-6 mb-2">
-            <a
-              href="#!"
-              className="text-blue-600 hover:text-blue-700 focus:text-blue-700 transition duration-200 ease-in-out"
-            >
-              Forgot password?
-            </a>
-          </p>
+            <div>
+              <p className="text-sm mt-2 mb-2">
+                <a
+                  href="#!"
+                  className="text-blue-600 hover:text-blue-700 focus:text-blue-700 transition duration-200 ease-in-out"
+                >
+                  Forgot password?
+                </a>
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </>
