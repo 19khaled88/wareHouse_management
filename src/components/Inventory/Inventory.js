@@ -27,7 +27,11 @@ const Inventory = () => {
       method: 'PUT',
     })
       .then((res) => res.json())
-      .then((data) => setModifiedCount(data.modifiedCount))
+      .then(
+        (data) => setModifiedCount(data.modifiedCount),
+        toast('Delivered successful'),
+      )
+
     // acknowledged: true
     // matchedCount: 1
     // modifiedCount: 1
@@ -46,6 +50,7 @@ const Inventory = () => {
       .then((res) => res.json())
       .then(
         (data) => setModifiedCount(data.modifiedCount),
+        toast('Restock successful'),
         // {
         //   alert('item posted')
         //   toast('Inventory added successfully')
