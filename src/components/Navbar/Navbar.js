@@ -62,7 +62,7 @@ const Navbar = ({ fixed }) => {
                   <span className="ml-2 mt-1">Home</span>
                 </Link>
               </li>
-              <li className="nav-item">
+              {/* <li className="nav-item">
                 <Link
                   className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75"
                   to="/inventory"
@@ -70,7 +70,7 @@ const Navbar = ({ fixed }) => {
                   <MdInventory className="text-lg opacity-75" />
                   <span className="ml-2 mt-1">Inventory</span>
                 </Link>
-              </li>
+              </li> */}
               {user !== null ? (
                 <li className="nav-item">
                   <button
