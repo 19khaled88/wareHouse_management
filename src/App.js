@@ -7,7 +7,7 @@ import Inventory from './components/Inventory/Inventory'
 import Register from './components/Register/Register'
 import ManageInventory from './components/ManageInventory/ManageInventory'
 import RequiredAuth from './Auth/RequiredAuth'
-
+import NotFound from './components/NotFound/NotFound'
 function App() {
   return (
     <div className="App">
@@ -15,7 +15,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route
-          path="/inventory"
+          path="/inventory/:id"
           element={
             <RequiredAuth>
               <Inventory />
@@ -24,6 +24,7 @@ function App() {
         />
         <Route path="/register" element={<Register />} />
         <Route path="/manageInventory" element={<ManageInventory />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   )

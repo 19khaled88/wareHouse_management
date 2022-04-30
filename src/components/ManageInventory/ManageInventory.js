@@ -1,19 +1,71 @@
-import React, { useRef, useState } from 'react'
-
+import React, { useRef, useState, useEffect } from 'react'
+import './ManageInventory.css'
+import { toast } from 'react-toastify'
 const ManageInventory = () => {
   const [showModal, setShowModal] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const [items, setItems] = useState([''])
   const nameRef = useRef('')
   const shortDescRef = useRef('')
   const priceRef = useRef('')
   const quantityRef = useRef('')
-  
-  const addItemHandler = () => {
-    setShowModal(false)
+  const supplierRef = useRef('')
+
+  const addItemHandler = (e) => {
+    // setShowModal(false)
     const name = nameRef.current.value
     const shortDes = shortDescRef.current.value
     const price = priceRef.current.value
     const quantity = quantityRef.current.value
-    console.log(name, shortDes, price, quantity)
+    const supplier = supplierRef.current.value
+    const item = { name, shortDes, price, quantity, supplier }
+
+    if (
+      name !== null ||
+      shortDes !== null ||
+      price !== null ||
+      quantity !== null ||
+      supplier !== null
+    ) {
+      fetch('http://localhost:5000/addItem', {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify(item),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          // alert('item posted')
+          toast('Item added successfully')
+          // e.target.reset();
+        })
+    }
+  }
+
+  useEffect(() => {
+    fetch('http://localhost:5000/getItems')
+      .then((res) => res.json())
+      .then((data) => setItems(data))
+    setLoading(false)
+  }, [items])
+
+  const itemDeleteHandler = (id) => {
+    console.log(id)
+    fetch(`http://localhost:5000/item/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify({ itemId: id }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.deleteCount > 0) {
+          const remaining = items.filter((item) => item._id !== id)
+          setItems(remaining)
+        }
+      })
   }
   return (
     <div className=" container mx-auto mt-10">
@@ -29,59 +81,32 @@ const ManageInventory = () => {
       <table class="mx-auto w-full table-fixed">
         <thead className="bg-cyan-400">
           <tr>
-            <th>Name</th>
-            <th>Short Desc</th>
-            <th>Price</th>
-            <th>Quantity</th>
-            <th>Action</th>
+            <th className="py-2">Name</th>
+            <th className="py-2 w-96 text-left">Short Desc</th>
+            <th className="py-2">Price</th>
+            <th className="py-2">Quantity</th>
+            <th className="py-2">Suppliers</th>
+            <th className="py-2">Action</th>
           </tr>
         </thead>
         <tbody className="bg-orange-400">
-          <tr>
-            <td>The Sliding Mr. Bones (Next Stop, Pottersville)</td>
-            <td>Malcolm Lockyer</td>
-            <td>$1000</td>
-            <td>100</td>
-            <td>
-              <button className="bg-cyan-400 px-2 rounded-md">Delete</button>
-            </td>
-          </tr>
-          <tr>
-            <td>Witchy Woman</td>
-            <td>The Eagles</td>
-            <td>$2000</td>
-            <td>170</td>
-            <td>
-              <button className="bg-cyan-400 px-2 rounded-md">Delete</button>
-            </td>
-          </tr>
-          <tr>
-            <td>Shining Star</td>
-            <td>Earth, Wind, and Fire</td>
-            <td>$3000</td>
-            <td>180</td>
-            <td>
-              <button className="bg-cyan-400 px-2 rounded-md">Delete</button>
-            </td>
-          </tr>
-          <tr>
-            <td>Shining Star</td>
-            <td>Earth, Wind, and Fire</td>
-            <td>$1000</td>
-            <td>130</td>
-            <td>
-              <button className="bg-cyan-400 px-2 rounded-md">Delete</button>
-            </td>
-          </tr>
-          <tr>
-            <td>Shining Star</td>
-            <td>Earth, Wind, and Fire</td>
-            <td>$6000</td>
-            <td>120</td>
-            <td>
-              <button className="bg-cyan-400 px-2 rounded-md">Delete</button>
-            </td>
-          </tr>
+          {items.map((item, key) => (
+            <tr key={key}>
+              <td>{item.name}</td>
+              <td className="text-justify">{item.shortDes}</td>
+              <td>{item.price}</td>
+              <td>{item.quantity}</td>
+              <td>{item.supplier}</td>
+              <td>
+                <button
+                  onClick={() => itemDeleteHandler(item._id)}
+                  className="bg-cyan-400 px-2 rounded-md"
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
 
@@ -136,6 +161,16 @@ const ManageInventory = () => {
                       name="quantity"
                       type="text"
                       placeholder="new quantity"
+                      class="px-2 py-1 placeholder-slate-300 text-slate-600 relative bg-white bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-3/4 pr-10"
+                    />
+                  </div>
+                  <div class="relative flex flex-row w-full flex-wrap items-stretch mb-3">
+                    <label className="w-1/4 text-left">Supplier</label>
+                    <input
+                      ref={supplierRef}
+                      name="supplier"
+                      type="text"
+                      placeholder="Supplier name"
                       class="px-2 py-1 placeholder-slate-300 text-slate-600 relative bg-white bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-3/4 pr-10"
                     />
                   </div>

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
-
+import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { Navigate, useLocation } from 'react-router-dom'
 import auth from '../components/firebase/firebase.init'
-import { onAuthStateChanged } from 'firebase/auth'
+
 const RequiredAuth = ({ children }) => {
-  let [user] = useAuthState(auth)
+  let [user1] = useAuthState(auth)
   let location = useLocation()
 
   // auth.onAuthStateChanged((user) => {
@@ -25,7 +25,7 @@ const RequiredAuth = ({ children }) => {
   //   return children
   // })
 
-  if (!user) {
+  if (!user1) {
     return (
       <Navigate to="/register" state={{ from: location }} replace></Navigate>
     )
