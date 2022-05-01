@@ -5,13 +5,29 @@ import auth from '../firebase/firebase.init'
 const MyItems = () => {
   const [user] = useAuthState(auth)
   const [myItem, setMyItem] = useState([])
-  myItem.map((item) => console.log(item.shortDes.toString().length))
+
   useEffect(() => {
     fetch(`http://localhost:5000/getMyItem/${user?.email}`)
       .then((res) => res.json())
       .then((data) => setMyItem(data))
-  }, [])
-  const itemDeleteHandler = () => {}
+  }, [myItem])
+
+  const itemDeleteHandler = (id) => {
+    fetch(`http://localhost:5000/item/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify({ itemId: id }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.deleteCount > 0) {
+          const remaining = myItem.filter((item) => item._id !== id)
+          setMyItem(remaining)
+        }
+      })
+  }
   return (
     <div className="container mt-10 mx-auto">
       <div className="text-left mb-4">
@@ -41,7 +57,11 @@ const MyItems = () => {
               <td>{item.supplier}</td>
               <td>
                 <button
-                  onClick={() => itemDeleteHandler(item._id)}
+                  onClick={() => {
+                    if (window.confirm('Delete the item?')) {
+                      itemDeleteHandler(item._id)
+                    }
+                  }}
                   className="bg-cyan-400 px-2 rounded-md"
                 >
                   Delete

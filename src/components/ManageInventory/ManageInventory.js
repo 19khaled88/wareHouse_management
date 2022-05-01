@@ -22,7 +22,7 @@ const ManageInventory = () => {
     const quantity = quantityRef.current.value
     const supplier = supplierRef.current.value
     const email = user?.email
-    const item = { name, shortDes, price, quantity, supplier,email }
+    const item = { name, shortDes, price, quantity, supplier, email }
 
     if (
       name !== null ||
@@ -56,7 +56,6 @@ const ManageInventory = () => {
   }, [items])
 
   const itemDeleteHandler = (id) => {
-    console.log(id)
     fetch(`http://localhost:5000/item/${id}`, {
       method: 'DELETE',
       headers: {

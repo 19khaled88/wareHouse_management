@@ -9,6 +9,7 @@ import {
 import {
   useCreateUserWithEmailAndPassword,
   useSignInWithEmailAndPassword,
+  useSendEmailVerification,
 } from 'react-firebase-hooks/auth'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -18,7 +19,7 @@ const provider = new GoogleAuthProvider()
 const Register = () => {
   const [isHaveAccount, SetIsHaveAccount] = useState(false)
   const [user3, setUser] = useState('')
-  const [errors, setErrors] = useState('')
+  const [error2, setErrors] = useState('')
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -34,6 +35,9 @@ const Register = () => {
     loading1,
     error1,
   ] = useCreateUserWithEmailAndPassword(auth)
+  const [sendEmailVerification, sending, error3] = useSendEmailVerification(
+    auth,
+  )
   const emailRef = useRef('')
   const passRef = useRef('')
   const cPassRef = useRef('')
@@ -41,12 +45,9 @@ const Register = () => {
   const registerHandler = () => {
     SetIsHaveAccount(!isHaveAccount)
   }
+  let errorState
   if (error || error1) {
-    return (
-      <div>
-        <p>Error. {error?.message || error1?.message}</p>
-      </div>
-    )
+    errorState = error?.message || error1?.message
   }
   if (loading || loading1) {
     return <p>Loading....</p>
@@ -55,6 +56,7 @@ const Register = () => {
   if (user || user1 || user3) {
     navigate(from, { replace: true })
   }
+
   const loginFormSubmitHandler = (e) => {
     e.preventDefault()
     const emailFound = emailRef.current.value
@@ -67,10 +69,17 @@ const Register = () => {
 
       return timer
     }
+    if (emailFound === null || passFound === null) {
+      setErrors('Email or Passowrd is empty')
+      const timer = setTimeout(() => {
+        setErrors('')
+      }, 3000)
+    }
     signInWithEmailAndPassword(emailFound, passFound)
   }
   const signUpFormSubmitHandler = (e) => {
     e.preventDefault()
+
     const emailFound = emailRef.current.value
     const passFound = passRef.current.value
     const cPassFound = cPassRef.current.value
@@ -81,6 +90,12 @@ const Register = () => {
       }, 3000)
       return timer
     }
+    if (emailFound === null || passFound === null) {
+      setErrors('Email or Passowrd is empty')
+      const timer = setTimeout(() => {
+        setErrors('')
+      }, 3000)
+    }
     if (passFound !== cPassFound) {
       setErrors('Sorry! passwords not match')
       const timer = setTimeout(() => {
@@ -88,6 +103,27 @@ const Register = () => {
       }, 3000)
     }
     createUserWithEmailAndPassword(emailFound, passFound)
+    sendEmailVerification()
+    alert('Send Email')
+  }
+
+  const SendEmailVerification = () => {
+    const [sendEmailVerification, sending, error3] = useSendEmailVerification(
+      auth,
+    )
+    if (sending) {
+      return <p>Sending....</p>
+    }
+    if (error3) {
+      return (
+        <div>
+          <p>Error: {error.message}</p>
+        </div>
+      )
+    }
+
+    sendEmailVerification()
+    alert('Send Email')
   }
 
   const signWithGoogle = () => {
@@ -165,7 +201,8 @@ const Register = () => {
                 />
               </div>
               <div className="flex justify-between items-center mb-4">
-                Empty space
+                {error2 ? error2 : ''}
+                {errorState ? errorState : ''}
               </div>
               <button
                 type="submit"
@@ -276,7 +313,8 @@ const Register = () => {
                 />
               </div>
               <div className="flex justify-between items-center mb-4">
-                Empty space
+                {error2 ? error2 : ''}
+                {errorState ? errorState : ''}
               </div>
               <button
                 type="submit"
