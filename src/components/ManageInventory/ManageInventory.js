@@ -3,10 +3,14 @@ import './ManageInventory.css'
 import { toast } from 'react-toastify'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import auth from '../firebase/firebase.init'
+import { css } from '@emotion/react'
+import ClipLoader from 'react-spinners/ClipLoader'
+import Loading from '../LoadingPage/Loading'
 const ManageInventory = () => {
   const [showModal, setShowModal] = useState(false)
   const [loading, setLoading] = useState(true)
   const [items, setItems] = useState([''])
+
   const [user] = useAuthState(auth)
   const nameRef = useRef('')
   const shortDescRef = useRef('')
@@ -73,47 +77,52 @@ const ManageInventory = () => {
   }
   return (
     <div className=" container mx-auto mt-10">
-      <div className="flex justify-end">
-        <button
-          type="button"
-          onClick={() => setShowModal(true)}
-          className="bg-orange-400 py-1 px-3 rounded-md mb-2"
-        >
-          Add New Items
-        </button>
-      </div>
-      <table class="mx-auto w-full table-fixed">
-        <thead className="bg-cyan-400">
-          <tr>
-            <th className="py-2">Name</th>
-            <th className="py-2 w-96 text-left">Short Desc</th>
-            <th className="py-2">Price</th>
-            <th className="py-2">Quantity</th>
-            <th className="py-2">Suppliers</th>
-            <th className="py-2">Action</th>
-          </tr>
-        </thead>
-        <tbody className="bg-orange-400">
-          {items.map((item, key) => (
-            <tr key={key}>
-              <td>{item.name}</td>
-              <td className="text-justify">{item.shortDes}</td>
-              <td>{item.price}</td>
-              <td>{item.quantity}</td>
-              <td>{item.supplier}</td>
-              <td>
-                <button
-                  onClick={() => itemDeleteHandler(item._id)}
-                  className="bg-cyan-400 px-2 rounded-md"
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
+      {loading === true ? (
+        <Loading />
+      ) : (
+        <>
+          <div className="flex justify-end">
+            <button
+              type="button"
+              onClick={() => setShowModal(true)}
+              className="bg-orange-400 py-1 px-3 rounded-md mb-2"
+            >
+              Add New Items
+            </button>
+          </div>
+          <table class="mx-auto w-full table-fixed">
+            <thead className="bg-cyan-400">
+              <tr>
+                <th className="py-2">Name</th>
+                <th className="py-2 w-96 text-left">Short Desc</th>
+                <th className="py-2">Price</th>
+                <th className="py-2">Quantity</th>
+                <th className="py-2">Suppliers</th>
+                <th className="py-2">Action</th>
+              </tr>
+            </thead>
+            <tbody className="bg-orange-400">
+              {items.map((item, key) => (
+                <tr key={key}>
+                  <td>{item.name}</td>
+                  <td className="text-justify">{item.shortDes}</td>
+                  <td>{item.price}</td>
+                  <td>{item.quantity}</td>
+                  <td>{item.supplier}</td>
+                  <td>
+                    <button
+                      onClick={() => itemDeleteHandler(item._id)}
+                      className="bg-cyan-400 px-2 rounded-md"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </>
+      )}
       {showModal ? (
         <>
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">

@@ -15,6 +15,7 @@ import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import auth from '../firebase/firebase.init'
 import { useLocation, useNavigate } from 'react-router-dom'
+import Loading from '../LoadingPage/Loading'
 const provider = new GoogleAuthProvider()
 const Register = () => {
   const [isHaveAccount, SetIsHaveAccount] = useState(false)
@@ -50,7 +51,7 @@ const Register = () => {
     errorState = error?.message || error1?.message
   }
   if (loading || loading1) {
-    return <p>Loading....</p>
+    return <Loading />
   }
   setPersistence(auth, browserLocalPersistence)
   if (user || user1 || user3) {
