@@ -53,7 +53,7 @@ const Register = () => {
   if (loading || loading1) {
     return <Loading />
   }
-  setPersistence(auth, browserLocalPersistence)
+
   if (user || user1 || user3) {
     navigate(from, { replace: true })
   }
@@ -104,25 +104,6 @@ const Register = () => {
       }, 3000)
     }
     createUserWithEmailAndPassword(emailFound, passFound)
-    sendEmailVerification()
-    alert('Send Email')
-  }
-
-  const SendEmailVerification = () => {
-    const [sendEmailVerification, sending, error3] = useSendEmailVerification(
-      auth,
-    )
-    if (sending) {
-      return <p>Sending....</p>
-    }
-    if (error3) {
-      return (
-        <div>
-          <p>Error: {error.message}</p>
-        </div>
-      )
-    }
-
     sendEmailVerification()
     alert('Send Email')
   }
