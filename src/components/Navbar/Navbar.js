@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import { signOut } from 'firebase/auth'
 import { Link, useNavigate } from 'react-router-dom'
-import { FaBeer, FaRegUserCircle, FaUserCircle } from 'react-icons/fa'
+import { FaUserCircle } from 'react-icons/fa'
 import { MdInventory } from 'react-icons/md'
 import { toast, ToastContainer } from 'react-toastify'
 import { AiFillHome, AiOutlineLogout } from 'react-icons/ai'
@@ -30,12 +30,12 @@ const Navbar = ({ fixed }) => {
       <nav className="relative flex flex-wrap items-center justify-between px-2 py-3 bg-cyan-500 ">
         <div className="container px-4 mx-auto flex flex-wrap items-center justify-between">
           <div className="w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start">
-            <a
+            <Link
               className="text-lg font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase text-white"
-              href="#pablo"
+              to="/"
             >
               BOOK-warehouse-control
-            </a>
+            </Link>
             <ToastContainer />
             <button
               className="text-white cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none"
@@ -62,25 +62,37 @@ const Navbar = ({ fixed }) => {
                   <span className="ml-2 mt-1">Home</span>
                 </Link>
               </li>
-              {/* <li className="nav-item">
+
+              <li className="nav-item">
                 <Link
                   className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75"
-                  to="/inventory"
+                  to="/blog"
                 >
                   <MdInventory className="text-lg opacity-75" />
-                  <span className="ml-2 mt-1">Inventory</span>
+                  <span className="ml-2 mt-1">Blog</span>
                 </Link>
-              </li> */}
+              </li>
               {user !== null ? (
-                <li className="nav-item">
-                  <button
-                    onClick={logoutHandler}
-                    className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75"
-                  >
-                    <FiLogOut className="text-lg opacity-75" />
-                    <span className="ml-2 mt-1">Logout</span>
-                  </button>
-                </li>
+                <>
+                  <li className="nav-item">
+                    <Link
+                      className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75"
+                      to="/myItems"
+                    >
+                      <MdInventory className="text-lg opacity-75" />
+                      <span className="ml-2 mt-1">MyItems</span>
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <button
+                      onClick={logoutHandler}
+                      className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75"
+                    >
+                      <FiLogOut className="text-lg opacity-75" />
+                      <span className="ml-2 mt-1">Logout</span>
+                    </button>
+                  </li>
+                </>
               ) : (
                 <li className="nav-item">
                   <Link

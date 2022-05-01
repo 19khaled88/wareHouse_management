@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import {
   CCard,
@@ -102,7 +102,14 @@ const Inventory = () => {
           </div>
         </CCardBody>
       </CCard>
-
+      <div className="my-5">
+        <Link
+          to="/manageInventory"
+          className="bg-pink-400 px-2 rounded-md py-1"
+        >
+          Manage Inventories
+        </Link>
+      </div>
       {showModal ? (
         <>
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">

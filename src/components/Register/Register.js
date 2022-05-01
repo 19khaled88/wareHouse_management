@@ -1,5 +1,11 @@
 import React, { useState, useRef } from 'react'
-import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
+import {
+  getAuth,
+  signInWithPopup,
+  GoogleAuthProvider,
+  setPersistence,
+  browserLocalPersistence,
+} from 'firebase/auth'
 import {
   useCreateUserWithEmailAndPassword,
   useSignInWithEmailAndPassword,
@@ -45,6 +51,7 @@ const Register = () => {
   if (loading || loading1) {
     return <p>Loading....</p>
   }
+  setPersistence(auth, browserLocalPersistence)
   if (user || user1 || user3) {
     navigate(from, { replace: true })
   }

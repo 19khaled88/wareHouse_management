@@ -8,6 +8,8 @@ import Register from './components/Register/Register'
 import ManageInventory from './components/ManageInventory/ManageInventory'
 import RequiredAuth from './Auth/RequiredAuth'
 import NotFound from './components/NotFound/NotFound'
+import MyItems from './components/MyItems/MyItems'
+import Blog from './components/Blog/Blog'
 function App() {
   return (
     <div className="App">
@@ -22,8 +24,17 @@ function App() {
             </RequiredAuth>
           }
         />
+        <Route
+          path="/myItems"
+          element={
+            <RequiredAuth>
+              <MyItems />
+            </RequiredAuth>
+          }
+        />
         <Route path="/register" element={<Register />} />
         <Route path="/manageInventory" element={<ManageInventory />} />
+        <Route path="/blog" element={<Blog />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>

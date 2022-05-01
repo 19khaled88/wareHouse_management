@@ -1,10 +1,13 @@
 import React, { useRef, useState, useEffect } from 'react'
 import './ManageInventory.css'
 import { toast } from 'react-toastify'
+import { useAuthState } from 'react-firebase-hooks/auth'
+import auth from '../firebase/firebase.init'
 const ManageInventory = () => {
   const [showModal, setShowModal] = useState(false)
   const [loading, setLoading] = useState(true)
   const [items, setItems] = useState([''])
+  const [user] = useAuthState(auth)
   const nameRef = useRef('')
   const shortDescRef = useRef('')
   const priceRef = useRef('')
@@ -18,14 +21,16 @@ const ManageInventory = () => {
     const price = priceRef.current.value
     const quantity = quantityRef.current.value
     const supplier = supplierRef.current.value
-    const item = { name, shortDes, price, quantity, supplier }
+    const email = user?.email
+    const item = { name, shortDes, price, quantity, supplier,email }
 
     if (
       name !== null ||
       shortDes !== null ||
       price !== null ||
       quantity !== null ||
-      supplier !== null
+      supplier !== null ||
+      email !== null
     ) {
       fetch('http://localhost:5000/addItem', {
         method: 'POST',
