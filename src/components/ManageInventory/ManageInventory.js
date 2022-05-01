@@ -36,7 +36,7 @@ const ManageInventory = () => {
       supplier !== null ||
       email !== null
     ) {
-      fetch('http://localhost:5000/addItem', {
+      fetch('https://young-lowlands-94292.herokuapp.com/addItem', {
         method: 'POST',
         headers: {
           'Content-type': 'application/json',
@@ -53,14 +53,14 @@ const ManageInventory = () => {
   }
 
   useEffect(() => {
-    fetch('http://localhost:5000/getItems')
+    fetch('https://young-lowlands-94292.herokuapp.com/getItems')
       .then((res) => res.json())
       .then((data) => setItems(data))
     setLoading(false)
   }, [items])
 
   const itemDeleteHandler = (id) => {
-    fetch(`http://localhost:5000/item/${id}`, {
+    fetch(`https://young-lowlands-94292.herokuapp.com/item/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-type': 'application/json',
@@ -78,7 +78,10 @@ const ManageInventory = () => {
   return (
     <div className=" container mx-auto mt-10">
       {loading === true ? (
-        <Loading />
+        <div>
+          {' '}
+          <Loading />
+        </div>
       ) : (
         <>
           <div className="flex justify-end">

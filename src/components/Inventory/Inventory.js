@@ -17,15 +17,18 @@ const Inventory = () => {
   const { id } = useParams()
   const inventRef = useRef('')
   useEffect(() => {
-    fetch(`http://localhost:5000/getInventory/${id}`)
+    fetch(`https://young-lowlands-94292.herokuapp.com/getInventory/${id}`)
       .then((res) => res.json())
       .then((data) => setItem(data))
     setLoading(false)
   }, [modifiedCount])
   const inventoryDelivered = (id, quantity) => {
-    fetch(`http://localhost:5000/updateInventory/${id}/${quantity}`, {
-      method: 'PUT',
-    })
+    fetch(
+      `https://young-lowlands-94292.herokuapp.com/updateInventory/${id}/${quantity}`,
+      {
+        method: 'PUT',
+      },
+    )
       .then((res) => res.json())
       .then(
         (data) => setModifiedCount(data.modifiedCount),
@@ -40,13 +43,16 @@ const Inventory = () => {
     const inventory = inventRef.current.value
     const item = { inventory }
 
-    fetch(`http://localhost:5000/restock/${id}/${quantity}`, {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json',
+    fetch(
+      `https://young-lowlands-94292.herokuapp.com/restock/${id}/${quantity}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify(item),
       },
-      body: JSON.stringify(item),
-    })
+    )
       .then((res) => res.json())
       .then(
         (data) => setModifiedCount(data.modifiedCount),

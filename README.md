@@ -1,6 +1,6 @@
 # WareHouse Management for Book Shop
 
-This project was bootstrapped with [Live Link](https://github.com/facebook/create-react-app).
+[Live Link](https://leafy-faloodeh-d4c623.netlify.app/).
 
 ## Task done on this web page:
 

@@ -7,13 +7,13 @@ const MyItems = () => {
   const [myItem, setMyItem] = useState([])
 
   useEffect(() => {
-    fetch(`http://localhost:5000/getMyItem/${user?.email}`)
+    fetch(`https://young-lowlands-94292.herokuapp.com/getMyItem/${user?.email}`)
       .then((res) => res.json())
       .then((data) => setMyItem(data))
   }, [myItem])
 
   const itemDeleteHandler = (id) => {
-    fetch(`http://localhost:5000/item/${id}`, {
+    fetch(`https://young-lowlands-94292.herokuapp.com/item/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-type': 'application/json',

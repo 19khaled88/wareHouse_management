@@ -19,7 +19,7 @@ const HomeInventory = () => {
     }
   }
   useEffect(() => {
-    fetch('http://localhost:5000/getHomeItems')
+    fetch('https://young-lowlands-94292.herokuapp.com/getHomeItems')
       .then((res) => res.json())
       .then((data) => setInventorys(data))
     setLoading(false)

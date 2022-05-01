@@ -113,7 +113,7 @@ const Register = () => {
       .then((result) => {
         // const currentUser = result.user
         // setUser(currentUser)
-        navigate('/inventory')
+        navigate('/blog')
         toast('Successfully signned in')
       })
       .catch((error) => {
